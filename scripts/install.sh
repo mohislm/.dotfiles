@@ -5,8 +5,6 @@ declare -a arr=(
   ".bash_profile"
   ".bashrc"
   ".vimrc"
-  ".gitconfig"
-  ".gitignore_global"
 )
 
 # This is a general-purpose function to ask Yes/No questions in Bash, either
@@ -67,7 +65,6 @@ safe_copy() {
 
 setup_vim() {
   if [ -d "$vimdir" ]; then
-    echo ""
     if ! ask "This will erase your current vim settings and install new plugins. Continue?" Y; then
       exit
     fi
