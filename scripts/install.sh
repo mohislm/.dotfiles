@@ -135,10 +135,10 @@ main() {
   task=$1
   if [ "$task" = "install" ]; then
     echo "Running installer...."
-    #install
+    install
   elif [ "$task" = "uninstall" ]; then
     echo "Commencing restoration...."
-    #restore
+    uninstall
   fi
 
 }
