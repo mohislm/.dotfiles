@@ -110,10 +110,10 @@ restore_dotfiles() {
   echo -e "\n$(tput setaf 7)Restoring all dotfiles...$(tput sgr 0)"
   for i in "${arr[@]}"; do
     # if backup file is found restore it
-    if [ -f "$i.bak" ]; then
-      mv $i.bak $i
+    if [ -f "$HOME/$i.bak" ]; then
+      mv $HOME/$i.bak $HOME/$i
     else
-      rm -rf $i
+      rm -rf $HOME/$i
     fi
   done
 }
