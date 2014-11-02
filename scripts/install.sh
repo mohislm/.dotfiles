@@ -112,7 +112,7 @@ restore_dotfiles() {
     if [ -f "$1.bak" ]; then
       cp $1.bak $1
     else
-      rm $1
+      rm -rf $1
     fi
   done
 }
