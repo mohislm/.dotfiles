@@ -83,6 +83,10 @@ setup_vim() {
 
 # Copy all dotfiles to $HOME
 copy_dotfiles() {
+  if ask "Copy git configs?" Y; then
+    arr+=(".gitconfig")
+    arr+=(".gitignore_global")
+  fi
   echo -e "\n$(tput setaf 7)Copying all dotfiles...$(tput sgr 0)"
 
   for i in "${arr[@]}"; do
