@@ -68,7 +68,7 @@ safe_copy() {
 setup_vim() {
   if [ -d "$vimdir" ]; then
     echo ""
-    if ! ask "This will remove the .vim directory. Continue?" Y; then
+    if ! ask "This will erase your current vim settings and install new plugins. Continue?" Y; then
       exit
     fi
   fi
