@@ -95,7 +95,7 @@ restore_vim() {
   echo -e "\n$(tput setaf 7)Restoring dot vim directory...$(tput sgr 0)"
   vimdir=$HOME/.vim
   if [ -d "$vimdir.bak" ]; then
-    cp -R $vimdir.bak $vimdir
+    mv $vimdir.bak $vimdir
   else
     rm -rf $vimdir
   fi
@@ -107,7 +107,7 @@ restore_dotfiles() {
   for i in "${arr[@]}"; do
     # if backup file is found restore it
     if [ -f "$1.bak" ]; then
-      cp $1.bak $1
+      mv $1.bak $1
     else
       rm -rf $1
     fi
