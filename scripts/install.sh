@@ -140,6 +140,8 @@ main() {
   elif [ "$task" = "uninstall" ]; then
     echo "Commencing restoration...."
     uninstall
+  else
+    echo "Please specify one option between 'install' and 'uninstall'"
   fi
 
 }
