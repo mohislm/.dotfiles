@@ -1,5 +1,11 @@
 # Get the absolute path where the script resides
 BASEDIR="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" && pwd )"
+vimdir=$HOME/.vim
+declare -a arr=(
+  ".bash_profile"
+  ".bashrc"
+  ".vimrc"
+)
 
 # This is a general-purpose function to ask Yes/No questions in Bash, either
 # with or without a default answer. It keeps repeating the question until it
@@ -58,16 +64,14 @@ safe_copy() {
 }
 
 setup_vim() {
-  vimdir=$HOME/.vim
-
   if [ -d "$vimdir" ]; then
-    echo ""
-    if ! ask "This will remove the .vim directory. Continue?" Y; then
+    if ! ask "This will erase your current vim settings and install new plugins. Continue?" Y; then
       exit
     fi
   fi
 
-  rm -rf $vimdir
+  # Create backup of previous vim directory
+  mv $vimdir $vimdir.bak
 
   echo -e "\n$(tput setaf 7)Installing Vundle...$(tput sgr 0)"
   git clone https://github.com/gmarik/Vundle.vim $vimdir/bundle/vundle.vim
@@ -79,25 +83,68 @@ setup_vim() {
 
 # Copy all dotfiles to $HOME
 copy_dotfiles() {
+  if ask "Copy git configs?" Y; then
+    arr+=(".gitconfig")
+    arr+=(".gitignore_global")
+  fi
   echo -e "\n$(tput setaf 7)Copying all dotfiles...$(tput sgr 0)"
-  declare -a arr=(
-    ".bash_profile"
-    ".bashrc"
-    ".vimrc"
-    ".gitconfig"
-    ".gitignore_global"
-  )
+
   for i in "${arr[@]}"; do
     safe_copy $BASEDIR/$i $HOME/$i
   done
 }
 
-main() {
+restore_vim() {
+  # Restore vim directory
+  echo -e "\n$(tput setaf 7)Restoring dot vim directory...$(tput sgr 0)"
+  vimdir=$HOME/.vim
+  if [ -d "$vimdir.bak" ]; then
+    mv $vimdir.bak $vimdir
+  else
+    rm -rf $vimdir
+  fi
+}
+
+restore_dotfiles() {
+  # Restore the dotfiles
+  echo -e "\n$(tput setaf 7)Restoring all dotfiles...$(tput sgr 0)"
+  for i in "${arr[@]}"; do
+    # if backup file is found restore it
+    if [ -f "$HOME/$i.bak" ]; then
+      mv $HOME/$i.bak $HOME/$i
+    else
+      rm -rf $HOME/$i
+    fi
+  done
+}
+
+uninstall() {
+  read_git_config
+  restore_vim
+  restore_dotfiles
+  write_git_config
+}
+
+install() {
   read_git_config
   copy_dotfiles
   write_git_config
   setup_vim
 }
 
-main
+main() {
+  task=$1
+  if [ "$task" = "install" ]; then
+    echo "Running installer...."
+    install
+  elif [ "$task" = "uninstall" ]; then
+    echo "Commencing restoration...."
+    uninstall
+  else
+    echo "Please specify one option between 'install' and 'uninstall'"
+  fi
+
+}
+
+main $1
 echo -e "\n$(tput setaf 2)Done$(tput sgr 0)\n"
