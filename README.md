@@ -38,11 +38,11 @@ Clean and two commits awaiting to be pushed:
 
 ### Install Dotfiles
 
-Make sure you have python installed. Then clone this repository into your home folder.
+Make sure you have python installed. Then clone this repository into your home folder:
 
 	git clone git@github.com:mislam/dotfiles.git ~/.dotfiles
 
-Run the installer script.
+Run the installer script (using Bash as your shell):
 
 	~/.dotfiles/scripts/install.sh
 
