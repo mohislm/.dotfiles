@@ -304,7 +304,7 @@ def get_git_status():
     for line in output.split('\n'):
         origin_status = re.findall(
             r"Your branch is (ahead|behind).*?(\d+) comm", line)
-        diverged_status = re.findall(r"and have (\d+) and (\d+) different commits each", line)
+        diverged_status = re.findall(r"and have (\d+) and (\d+) different commits? each", line)
         if origin_status:
             origin_position = " %d" % int(origin_status[0][1])
             if origin_status[0][0] == 'behind':
